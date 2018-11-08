@@ -1,0 +1,14 @@
+{
+  "name": "spotifytradfri",
+  "version": "1.0.0",
+  "description": "A user interface that connects spotify to tradfri lights",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lucas Bos",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
+}
