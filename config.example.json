@@ -1,0 +1,19 @@
+{
+  "tradfri": {
+    "name": "",
+    "host": "",
+    "version": "",
+    "addresses": [
+      "",
+      ""
+    ],
+    "identity": "",
+    "psk": "",
+    "securityCode": ""
+  },
+  "spotify": {
+    "clientId": "",
+    "clientSecret": "",
+    "redirectUri": ""
+  }
+}

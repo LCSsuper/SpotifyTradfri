@@ -9,6 +9,11 @@
   "author": "Lucas Bos",
   "license": "ISC",
   "dependencies": {
-    "request": "^2.88.0"
+    "node-tradfri-client": "^1.4.3",
+    "request": "^2.88.0",
+    "spotify-web-api-node": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.6"
   }
 }

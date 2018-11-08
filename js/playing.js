@@ -3,9 +3,15 @@
  */
 
 const Http = new XMLHttpRequest();
+const HttpColor = new XMLHttpRequest();
 const url = '/album';
-const image = document.getElementById('album-cover');
+const imageEl = document.getElementById('album-cover');
+const titleEl = document.getElementById('title');
+const artistEl = document.getElementById('artist');
+const albumEl = document.getElementById('album');
 const body = document.getElementsByTagName('body')[0];
+let filename = "";
+let hex = "";
 
 window.onload = function() {
 
@@ -13,20 +19,47 @@ window.onload = function() {
 
     setInterval(() => {
         setAlbumColor();
-    }, 2000);
+    }, 500);
 };
 
 function setAlbumColor() {
     Http.open("GET", url);
     Http.send();
-    Http.onreadystatechange=(e)=>{
-        if (Http.responseText != "") {
-            let rgb = getAverageRGB(image);
-            if (rgb.r != 0 || rgb.g != 0 || rgb.b != 0) {
-                let hex = rgbToHex(rgb.r, rgb.g, rgb.b);
-                body.style.background = "linear-gradient(to bottom right, " + hex + ", #191414)";
+    Http.onreadystatechange = e => {
+        let res = Http.responseText;
+
+        if (res !== "") {
+
+            res = JSON.parse(res);
+
+            console.log(res);
+
+            filename = res.filename;
+            let title = res.title;
+            let artist = res.artist;
+            let album = res.album;
+            titleEl.innerText = title;
+            artistEl.innerText = artist;
+            albumEl.innerText = album;
+
+            if (filename !== "") {
+                imageEl.src = "/album/" + filename;
             }
-            image.src = "/album/" + Http.responseText;
+        }
+
+        let rgb = getAverageRGB(imageEl);
+        if (rgb.r != 0 || rgb.g != 0 || rgb.b != 0) {
+            let newHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+
+
+            if (newHex !== hex) {
+                body.style.background = "linear-gradient(to bottom right, #" + newHex + ", #191414)";
+
+                HttpColor.open("GET", '/color/' + newHex);
+                HttpColor.send();
+
+                hex = newHex;
+            }
         }
     };
 }
@@ -83,5 +116,5 @@ function decToHex(decimal) {
 }
 
 function rgbToHex(r, g, b) {
-    return '#' + decToHex(r) + decToHex(g) + decToHex(b);
+    return decToHex(r) + decToHex(g) + decToHex(b);
 }
