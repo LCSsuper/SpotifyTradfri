@@ -42,8 +42,6 @@ fs.readFile('./html/index.html', function (err, html) {
         console.log(err);
     }
 
-    console.log(1);
-
     http.createServer(function(request, response) {
         let url = request.url;
 
