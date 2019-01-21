@@ -8,3 +8,5 @@ config.json
 .DS_Store
 
 album/*
+
+.idea/*
