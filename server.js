@@ -145,6 +145,11 @@ fs.readFile('./html/index.html', function (err, html) {
             response.end("");
         }
 
+        if (url.startsWith('/IDandPSK/')) {
+            let name = url.replace('/IDandPSK/', '');
+            getIDandPSK(name, response);
+        }
+
         if (url === '/connect') {
             var scopes = 'user-read-private user-read-email user-read-playback-state';
 
@@ -168,7 +173,18 @@ fs.readFile('./html/index.html', function (err, html) {
                 'Location': '/playing'
             });
             response.end();
+        }
 
+        if (url.startsWith('/save')) {
+
+            let json = url.split("json=")[1];
+
+            save(json);
+
+            response.writeHead(302, {
+                'Location': '/'
+            });
+            response.end();
         }
 
         if (url === '/playing') {
@@ -181,8 +197,31 @@ fs.readFile('./html/index.html', function (err, html) {
                 response.end(html);
             });
         }
+
+        if (url === '/config') {
+            fs.readFile('./html/config.html', function (err, html) {
+                if (err) {
+                    console.log(err);
+                }
+
+                response.writeHeader(200, {"Content-Type": "text/html"});
+                response.end(html);
+            });
+        }
     }).listen(8080);
 });
+
+let getIDandPSK = async function(name, response) {
+    try {
+        const data = await client.authenticate(configuration.tradfri.securityCode);
+
+        response.writeHeader(200, {"Content-Type": "text/plain"});
+        response.end(JSON.stringify(data));
+    } catch (e) {
+        response.writeHeader(200, {"Content-Type": "text/plain"});
+        response.end(null);
+    }
+};
 
 let initializeTradfri = function() {
     client
@@ -234,6 +273,14 @@ let initializeSpotify = function(token) {
             spotifyApi.setAccessToken(data.body['access_token']);
             initialized = true;
         });
+};
+
+let save = function(json) {
+    json = json.replace(/%22/g, '"');
+
+    fs.writeFile('config.json', json, function() {
+        console.log("saved!");
+    });
 };
 
 /**
