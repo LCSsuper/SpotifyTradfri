@@ -53,7 +53,7 @@ function setAlbumColor() {
 
 
             if (newHex !== hex) {
-                body.style.background = "linear-gradient(to bottom right, #" + newHex + ", #191414)";
+                body.style.background = "linear-gradient(to bottom, #" + newHex + ", #" + newHex + ", #191414)";
 
                 HttpColor.open("GET", '/color/' + newHex);
                 HttpColor.send();
@@ -96,10 +96,15 @@ function getAverageRGB(imgEl) {
     length = data.data.length;
 
     while ( (i += blockSize * 4) < length ) {
-        ++count;
-        rgb.r += data.data[i];
-        rgb.g += data.data[i+1];
-        rgb.b += data.data[i+2];
+        if (
+            (data.data[i] > 150 || data.data[i+1] > 150 || data.data[i+2] > 150)
+            && (data.data[i] < 200 && data.data[i+1] < 200 && data.data[i+2] < 200)
+        ) {
+            ++count;
+            rgb.r += data.data[i];
+            rgb.g += data.data[i+1];
+            rgb.b += data.data[i+2];
+        }
     }
 
     // ~~ used to floor values

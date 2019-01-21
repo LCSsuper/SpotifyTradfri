@@ -16,28 +16,43 @@
 }
 
 .container p {
-    margin: 30px;
+    margin: 30px 30px 0 30px;
     text-align: left;
-    line-height: 1.4;
+    line-height: 1.2;
 }
 
-.container #button {
+.container .button {
     box-sizing: border-box;
     width: 80%;
-    position: absolute;
-    left: 10%;
-    bottom: 30px;
     border-radius: 20px;
     padding: 10px 0 10px 0;
-
-    background-color: #1db954;
+    transition: transform .2s;
 }
 
-.container #button img {
+.container .button:hover {
+    transform: scale(1.1);
+}
+
+.container #spotify {
+    position: absolute;
+    left: 10%;
+    bottom: 20px;
+    background-color: #1db954;
+    box-shadow: #246538 1px 1px 10px;
+}
+
+.container #configure {
+    margin: 10px 0 0 10%;
+    background-color: #535052;
+    box-shadow: #484445 1px 1px 10px;
+}
+
+.container .button img {
     height: 20px;
     transform: translate(0, 15%);
 }
 
 a {
     color: white !important;
+    text-decoration: none;
 }

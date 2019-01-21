@@ -1,29 +1,25 @@
-#album-cover-container {
-    box-sizing: border-box;
-    height: 100%;
+#container {
     width: 60%;
+    height: 100%;
+    margin: 0 20% 0 20%;
+
+    box-sizing: border-box;
+    border: 1px solid transparent;
+}
+
+#album-cover-container {
+    height: 80%;
+    width: 100%;
     float: left;
 }
 
 #album-cover {
     width: 60%;
-    height: 60%;
-    margin: 20% 0 0 20%;
+    margin: 5% 20% 0 20%;
 }
 
 #details-container {
-    box-sizing: border-box;
-    height: 100%;
-    width: 40%;
-    float: left;
-    padding-top: 22%;
-}
-
-#details-container p {
-    font-size: 25px;
-    margin: 5px 0 0 0;
-}
-
-#details-container h1 {
-    margin-bottom: 5px;
+    height: 20%;
+    width: 100%;
+    text-align: center;
 }
