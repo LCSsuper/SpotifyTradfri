@@ -35,13 +35,17 @@ button {
     border-radius: 20px;
     border: 0;
     width: 150px;
+    height: 33px;
+    overflow: hidden;
     background-color: #1db954;
+    box-shadow: #246538 1px 1px 10px;
 
     transition: transform .2s;
 }
 
 button#cancel, button#generate {
     background-color: #777777;
+    box-shadow: #484445 1px 1px 10px;
 }
 
 button#cancel {
@@ -49,5 +53,90 @@ button#cancel {
 }
 
 button:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
+}
+
+p {
+    margin: 0;
+}
+
+/**************************************
+****** loader CSS *********************
+**************************************/
+
+@keyframes anima1 {
+    0%   { top: 0;                 left: 0;                 }
+    25%  { top: 0;                 left: calc(100% - 20px); }
+    50%  { top: calc(100% - 20px); left: calc(100% - 20px); }
+    75%  { top: calc(100% - 20px); left: 0;                 }
+    100% { top: 0;                 left: 0;                 }
+}
+
+@keyframes anima2 {
+    0%   { top: 0;                 left: calc(100% - 20px); }
+    25%  { top: calc(100% - 20px); left: calc(100% - 20px); }
+    50%  { top: calc(100% - 20px); left: 0;                 }
+    75%  { top: 0;                 left: 0;                 }
+    100% { top: 0;                 left: calc(100% - 20px); }
+}
+
+@keyframes anima3 {
+    0%   { top: calc(100% - 20px); left: calc(100% - 20px); }
+    25%  { top: calc(100% - 20px); left: 0;                 }
+    50%  { top: 0;                 left: 0;                 }
+    75%  { top: 0;                 left: calc(100% - 20px); }
+    100% { top: calc(100% - 20px); left: calc(100% - 20px); }
+}
+
+@keyframes anima4 {
+    0%   { top: calc(100% - 20px); left: 0;                 }
+    25%  { top: 0;                 left: 0;                 }
+    50%  { top: 0;                 left: calc(100% - 20px); }
+    75%  { top: calc(100% - 20px); left: calc(100% - 20px); }
+    100% { top: calc(100% - 20px); left: 0;                 }
+}
+
+body {
+    margin: 0;
+}
+
+#loader {
+    margin-left: 55%;
+    transform: translateX(-50%);
+    height: 30px;
+    width: 30px;
+    position: relative;
+    display: none;
+}
+
+.item {
+    position: absolute;
+    border-radius: 50%;
+    height: 5px;
+    width: 5px;
+    background-color: white;
+}
+
+.item:nth-child(1) {
+    top: 0;
+    left: 0;
+    animation: anima1 2s ease infinite;
+}
+
+.item:nth-child(2) {
+    top: 0;
+    right: 0;
+    animation: anima2 2s ease infinite;
+}
+
+.item:nth-child(3) {
+    bottom: 0;
+    left: 0;
+    animation: anima3 2s ease infinite;
+}
+
+.item:nth-child(4) {
+    bottom: 0;
+    right: 0;
+    animation: anima4 2s ease infinite;
 }

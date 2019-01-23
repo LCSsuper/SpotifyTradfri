@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Currently playing</title>
+    <title>Config</title>
     <link rel="stylesheet" type="text/css" href="css/default.css">
     <link rel="stylesheet" type="text/css" href="css/config.css">
 </head>
@@ -10,7 +10,15 @@
 <div id="container">
     <h3>Trådfri</h3>
     <input type="text" id="name" placeholder="Name">
-    <button id="generate" onClick="getIDandPSK()">Generate ID and PSK</button>
+    <button id="generate" onClick="getIDandPSK()">
+        <p id="buttonText">Generate ID and PSK</p>
+        <div id="loader">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    </button>
     <input type="text" id="host" placeholder="Host">
     <input type="text" id="version" placeholder="Version">
     <input type="text" id="address1" placeholder="Adress 1">
@@ -22,7 +30,6 @@
     <input type="text" id="ClientId" placeholder="Client ID">
     <input type="text" id="clientSecret" placeholder="Client secret">
     <input type="text" id="redirectUri" placeholder="Redirect URI">
-    <input type="text" id="accesstoken" placeholder="Accesstoken">
     <button onClick="save()">Save</button>
     <button id="cancel" onClick="cancel()">Cancel</button>
 </div>

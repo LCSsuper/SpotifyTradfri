@@ -2,48 +2,70 @@
  * Created by lcssuper on 08-11-18.
  */
 
-const Http = new XMLHttpRequest();
-const IDPSKHttp = new XMLHttpRequest();
+const name = document.getElementById('name');
+const host = document.getElementById('host');
+const version = document.getElementById('version');
+const address1 = document.getElementById('address1');
+const address2 = document.getElementById('address2');
+const identity = document.getElementById('identity');
+const psk = document.getElementById('psk');
+const securityCode = document.getElementById('securityCode');
+
+const clientId = document.getElementById('ClientId');
+const clientSecret = document.getElementById('clientSecret');
+const redirectUri = document.getElementById('redirectUri');
+
+const buttonText = document.getElementById('buttonText');
+const loader = document.getElementById('loader');
+
+window.onload = function() {
+    getConfig();
+};
+
+function getConfig() {
+    fetch("/getConfig")
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(json) {
+            name.value = json.tradfri.name;
+            host.value = json.tradfri.host;
+            version.value = json.tradfri.version;
+            address1.value = json.tradfri.addresses[0];
+            address2.value = json.tradfri.addresses[1];
+            identity.value = json.tradfri.identity;
+            psk.value = json.tradfri.psk;
+            securityCode.value = json.tradfri.securityCode;
+
+            clientId.value = json.spotify.clientId;
+            clientSecret.value = json.spotify.clientSecret;
+            redirectUri.value = json.spotify.redirectUri;
+        });
+}
 
 function save() {
 
-    let name = document.getElementById('name').value;
-    let host = document.getElementById('host').value;
-    let version = document.getElementById('version').value;
-    let address1 = document.getElementById('address1').value;
-    let address2 = document.getElementById('address2').value;
-    let identity = document.getElementById('identity').value;
-    let psk = document.getElementById('psk').value;
-    let securityCode = document.getElementById('securityCode').value;
-
-    let clientId = document.getElementById('ClientId').value;
-    let clientSecret = document.getElementById('clientSecret').value;
-    let redirectUri = document.getElementById('redirectUri').value;
-    let accesstoken = document.getElementById('accesstoken').value;
-
     let json = {
         tradfri: {
-            name: name,
-            host: host,
-            version: version,
+            name: name.value,
+            host: host.value,
+            version: version.value,
             addresses: [
-                address1,
-                address2
+                address1.value,
+                address2.value
             ],
-            identity: identity,
-            psk: psk,
-            securityCode: securityCode
+            identity: identity.value,
+            psk: psk.value,
+            securityCode: securityCode.value
         },
         spotify: {
-            clientId: clientId,
-            clientSecret: clientSecret,
-            redirectUri: redirectUri,
-            accessToken: accesstoken
+            clientId: clientId.value,
+            clientSecret: clientSecret.value,
+            redirectUri: redirectUri.value
         }
     };
 
-    Http.open("GET", "/save?json=" + JSON.stringify(json));
-    Http.send();
+    fetch("/save?json=" + JSON.stringify(json));
 
     window.location = '/';
 }
@@ -53,19 +75,25 @@ function cancel() {
 }
 
 function getIDandPSK() {
-    let name = document.getElementById('name').value;
+    let nameValue = name.value;
 
-    IDPSKHttp.open("GET", '/IDandPSK/' + name);
-    IDPSKHttp.send();
-    IDPSKHttp.onreadystatechange = e => {
-        let res = Http.responseText;
+    if (nameValue === '') {
+        name.placeholder = 'Please fill in the official name before generating ID and PSK';
+        setTimeout(() => name.placeholder = 'Name', 5000);
+    } else {
+        buttonText.style.display = 'none';
+        loader.style.display = 'block';
 
-        if (res !== null && res !== "") {
-            //TODO: fill identity field and PSK field
+        fetch('/IDandPSK/' + nameValue)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(response) {
+                buttonText.style.display = 'block';
+                loader.style.display = 'none';
 
-            document.getElementById('identity').value = "";
-            document.getElementById('psk').value = "";
-        }
-    };
-
+                identity.value = response.identity;
+                psk.value = response.psk;
+            });
+    }
 }

@@ -208,8 +208,29 @@ fs.readFile('./html/index.html', function (err, html) {
                 response.end(html);
             });
         }
+
+        if (url === '/getConfig') {
+            fs.stat('./config.json', function(err) {
+                if(err == null) {
+                    getConfig('./config.json', response)
+                } else {
+                    getConfig('./config.example.json', response);
+                }
+            });
+        }
     }).listen(8080);
 });
+
+let getConfig = (filename, response) => {
+    fs.readFile(filename, 'utf8', function (err, data) {
+        if (err) {
+            console.log(err);
+        }
+
+        response.writeHeader(200, {"Content-Type": "application/json"});
+        response.end(data);
+    });
+};
 
 let getIDandPSK = async function(name, response) {
     try {

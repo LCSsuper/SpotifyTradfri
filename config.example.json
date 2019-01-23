@@ -14,7 +14,6 @@
   "spotify": {
     "clientId": "",
     "clientSecret": "",
-    "redirectUri": "",
-    "accessToken": ""
+    "redirectUri": "http://localhost:8080/callback/"
   }
 }
