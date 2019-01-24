@@ -43,6 +43,12 @@ fs.readFile('./html/index.html', function (err, html) {
     }
 
     http.createServer(function(request, response) {
+
+        response.setHeader('Access-Control-Allow-Origin', '*');
+        response.setHeader('Access-Control-Request-Method', '*');
+        response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+        response.setHeader('Access-Control-Allow-Headers', '*');
+
         let url = request.url;
 
         console.log(url);
@@ -50,20 +56,6 @@ fs.readFile('./html/index.html', function (err, html) {
         if (url === '/') {
             response.writeHeader(200, {"Content-Type": "text/html"});
             response.end(html);
-        }
-
-        if (url.startsWith('/images/')) {
-            fs.readFile('.' + url, function (err, image) {
-                if (err) {
-                    console.log(err);
-                }
-
-                let splitted = url.split('.'),
-                    imageType = splitted[splitted.length - 1];
-
-                response.writeHeader(200, {"Content-Type": "image/" + imageType});
-                response.end(image, 'binary');
-            });
         }
 
         if (url.startsWith('/images/')) {
@@ -153,6 +145,7 @@ fs.readFile('./html/index.html', function (err, html) {
         if (url === '/connect') {
             var scopes = 'user-read-private user-read-email user-read-playback-state';
 
+
             response.writeHead(302, {
                 'Location': 'https://accounts.spotify.com/authorize' +
                     '?response_type=code' +
@@ -161,6 +154,17 @@ fs.readFile('./html/index.html', function (err, html) {
                     '&redirect_uri=' + encodeURIComponent(configuration.spotify.redirectUri)
             });
             response.end();
+        }
+
+        if (url === '/authorize') {
+            let scopes = 'user-read-private user-read-email user-read-playback-state';
+
+            response.writeHeader(200, {"Content-Type": "text/plain"});
+            response.end('https://accounts.spotify.com/authorize' +
+                '?response_type=code' +
+                '&client_id=' + configuration.spotify.clientId +
+                (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+                '&redirect_uri=' + encodeURIComponent(configuration.spotify.redirectUri));
         }
 
         if (url.startsWith('/callback/')) {
@@ -217,6 +221,10 @@ fs.readFile('./html/index.html', function (err, html) {
                     getConfig('./config.example.json', response);
                 }
             });
+        }
+
+        if (url === '/getCurrentlyPlaying') {
+            getPlaying(response);
         }
     }).listen(8080);
 });
@@ -302,6 +310,34 @@ let save = function(json) {
     fs.writeFile('config.json', json, function() {
         console.log("saved!");
     });
+};
+
+let getPlaying = response => {
+    if (initialized) {
+        spotifyApi.getMyCurrentPlaybackState({})
+            .then(function(data) {
+
+                let album = "";
+                let title = "";
+                let artist = "";
+                let albumCover = "";
+
+                if (!isEmpty(data.body)) {
+                    album = data.body.item.album.name;
+                    title = data.body.item.name;
+                    artist = data.body.item.artists[0].name;
+                    albumCover = data.body.item.album.images[0].url;
+                }
+
+                response.writeHeader(200, {"Content-Type": "application/json"});
+                response.end(JSON.stringify({
+                    albumCover: albumCover,
+                    album: album,
+                    title: title,
+                    artist: artist
+                }));
+            }, err => console.log(err));
+    }
 };
 
 /**

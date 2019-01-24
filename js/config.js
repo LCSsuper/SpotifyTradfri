@@ -84,16 +84,20 @@ function getIDandPSK() {
         buttonText.style.display = 'none';
         loader.style.display = 'block';
 
+        //TODO: check if works with real name
         fetch('/IDandPSK/' + nameValue)
-            .then(function(response) {
-                return response.json();
+            .then(response => {
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json().then(data => {
+                        identity.value = data.identity;
+                        psk.value = data.psk;
+                    });
+                }
             })
-            .then(function(response) {
+            .then(() => {
                 buttonText.style.display = 'block';
                 loader.style.display = 'none';
-
-                identity.value = response.identity;
-                psk.value = response.psk;
             });
     }
 }
