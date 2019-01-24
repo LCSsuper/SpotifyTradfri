@@ -7,8 +7,13 @@ class Home extends Component {
     constructor(props) {
         super(props);
 
-        //TODO: check if auth code is found in props after redirect to spotify
-        console.log(props);
+        if (props.location.search.includes("?code")) {
+            let token = props.location.search.split("?code=")[1];
+
+            fetch("http://localhost:8080/access/" + token);
+
+            this.props.history.push('/playing');
+        }
     }
 
     render() {
@@ -40,8 +45,6 @@ class Home extends Component {
             .then(text => {
                 window.location = text;
             });
-
-        //TODO: call to backend and whatnot
     }
 }
 
