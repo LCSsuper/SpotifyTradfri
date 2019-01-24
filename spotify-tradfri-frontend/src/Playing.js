@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Playing.css';
 import ColorThief from 'color-thief';
-
+import hexSorter from 'hexsorter';
 class Playing extends Component {
 
     constructor(props) {
@@ -57,21 +57,31 @@ class Playing extends Component {
                 let colorThief = new ColorThief();
                 let imageEl = document.getElementById('album-cover');
                 try {
-                    //TODO: get pallette and find brightest color
-                    let color = colorThief.getColor(imageEl);
+                    let colors = colorThief.getPalette(imageEl, 8);
+
+                    console.log(colors);
+
+                    for (let i = 0; i < colors.length; i++) {
+                        colors[i] = '#' + self.rgbToHex(colors[i][0], colors[i][1], colors[i][2]);
+                    }
+
+                    let color = hexSorter.mostSaturatedColor(colors);
+
+                    console.log(color);
+
                     self.setAndSendColor(color);
+
                 } catch (e) {}
             })
     }
 
-    setAndSendColor(color) {
-        let hex = this.rgbToHex(color[0], color[1], color[2]);
+    setAndSendColor(hex) {
         let body = document.getElementsByTagName('body')[0];
 
         if (this.state.hex !== hex) {
-            fetch('http://localhost:8080/color/' + hex);
+            fetch('http://localhost:8080/color/' + hex.split("#")[1]);
 
-            body.style.background = "linear-gradient(to bottom, #" + hex + ", #" + hex + ", #191414)";
+            body.style.background = "linear-gradient(to bottom, " + hex + ", " + hex + ", #191414)";
 
             this.setState({
                 hex: hex

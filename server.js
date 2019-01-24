@@ -165,7 +165,6 @@ let getPlaying = response => {
 
                 let album = "";
                 let title = "";
-                let title = "";
                 let artist = "";
                 let albumCover = "";
 
