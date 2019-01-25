@@ -1,6 +1,3 @@
-/**
- * Created by lcssuper on 08-11-18.
- */
 let http = require('http'),
     fs = require('fs'),
     SpotifyWebApi = require('spotify-web-api-node'),
@@ -8,26 +5,11 @@ let http = require('http'),
     request = require('request'),
     path = require('path');
 
-const configuration = JSON.parse(fs.readFileSync('config.json', 'utf8'));
-const client = new tradfri.TradfriClient(configuration.tradfri.name);
-let initialized = false;
-
-//TODO: do this when the frontend asks it to
-try {
-    client.connect(configuration.tradfri.identity, configuration.tradfri.psk).then(result => {
-        if (result) {
-            initializeTradfri();
-        }
-    })
-} catch (e) {}
+let client = null,
+    spotifyApi = null,
+    initialized = false;
 
 let lightbulbs = [];
-
-let spotifyApi = new SpotifyWebApi({
-    clientId: configuration.spotify.clientId,
-    clientSecret: configuration.spotify.clientSecret,
-    redirectUri: configuration.spotify.redirectUri
-});
 
 http.createServer((request, response) => {
 
@@ -55,6 +37,7 @@ http.createServer((request, response) => {
 
     if (url === '/authorize') {
         let scopes = 'user-read-private user-read-email user-read-playback-state';
+        let configuration = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
         response.writeHeader(200, {"Content-Type": "text/plain"});
         response.end('https://accounts.spotify.com/authorize' +
@@ -68,6 +51,7 @@ http.createServer((request, response) => {
 
         let token = url.split("/access/")[1];
 
+        startTradfri();
         initializeSpotify(token);
 
         response.writeHeader(200, {"Content-Type": "text/plain"});
@@ -111,12 +95,35 @@ let getConfig = (filename, response) => {
 let getIDandPSK = async (name, response) => {
     response.writeHeader(200, {"Content-Type": "text/plain"});
 
+    let configuration = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+
+    if (client === null) {
+        client = new tradfri.TradfriClient(configuration.tradfri.name);
+    }
+
     try {
         const data = await client.authenticate(configuration.tradfri.securityCode);
         response.end(JSON.stringify(data));
     } catch (e) {
         response.end(null);
     }
+};
+
+let startTradfri = () => {
+
+    let configuration = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+
+    if (client === null) {
+        client = new tradfri.TradfriClient(configuration.tradfri.name);
+    }
+
+    try {
+        client.connect(configuration.tradfri.identity, configuration.tradfri.psk).then(result => {
+            if (result) {
+                initializeTradfri();
+            }
+        })
+    } catch (e) {}
 };
 
 let initializeTradfri = () => {
@@ -144,6 +151,15 @@ let setColor = color => {
 };
 
 let initializeSpotify = token => {
+
+    let configuration = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+
+    spotifyApi = new SpotifyWebApi({
+        clientId: configuration.spotify.clientId,
+        clientSecret: configuration.spotify.clientSecret,
+        redirectUri: configuration.spotify.redirectUri
+    });
+
     spotifyApi
         .authorizationCodeGrant(token)
         .then(data => {

@@ -13,10 +13,8 @@ class Playing extends Component {
             album: "",
             albumCover: "",
             hex: ""
-        }
-    }
+        };
 
-    componentDidMount() {
         this.getCurrentlyPlaying();
 
         setInterval(() => {
@@ -59,15 +57,11 @@ class Playing extends Component {
                 try {
                     let colors = colorThief.getPalette(imageEl, 8);
 
-                    console.log(colors);
-
                     for (let i = 0; i < colors.length; i++) {
                         colors[i] = '#' + self.rgbToHex(colors[i][0], colors[i][1], colors[i][2]);
                     }
 
                     let color = hexSorter.mostSaturatedColor(colors);
-
-                    console.log(color);
 
                     self.setAndSendColor(color);
 
