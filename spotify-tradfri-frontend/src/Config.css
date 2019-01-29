@@ -11,7 +11,7 @@ input {
     box-sizing: border-box;
     width: 100%;
     opacity: 0.9;
-    background: #777777;
+    background: #727272;
     border: none;
     border-radius: 20px;
     padding: 10px;
@@ -19,11 +19,15 @@ input {
     color: white;
 }
 
+:disabled {
+    background: #585858;
+}
+
 ::placeholder {
     color: #c9c9c9;
 }
 
-h3 {
+h3, h5 {
     margin-bottom: 0;
 }
 
@@ -43,12 +47,12 @@ button, #cancel {
     overflow: hidden;
     background-color: #1db954;
     box-shadow: #246538 1px 1px 10px;
-
+    cursor: pointer;
     transition: transform .2s;
 }
 
 #cancel, button#generate {
-    background-color: #777777;
+    background-color: #818181;
     box-shadow: #484445 1px 1px 10px;
 }
 

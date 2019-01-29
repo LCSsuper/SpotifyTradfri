@@ -30,9 +30,9 @@ http.createServer((request, response) => {
         response.end();
     }
 
-    if (url.startsWith('/IDandPSK/')) {
-        let name = url.replace('/IDandPSK/', '');
-        getIDandPSK(name, response);
+    if (url.startsWith('/generateTradfriData/')) {
+        let securityCode = url.replace('/generateTradfriData/', '');
+        generateTradfriData(response, securityCode);
     }
 
     if (url === '/authorize') {
@@ -92,32 +92,31 @@ let getConfig = (filename, response) => {
     });
 };
 
-let getIDandPSK = async (name, response) => {
-    response.writeHeader(200, {"Content-Type": "text/plain"});
+let generateTradfriData = async (response, securityCode) => {
+    response.writeHeader(200, {"Content-Type": "application/json"});
 
-    let configuration = JSON.parse(fs.readFileSync('config.json', 'utf8'));
-
-    if (client === null) {
-        client = new tradfri.TradfriClient(configuration.tradfri.name);
-    }
+    const result = await tradfri.discoverGateway();
+    let c = new tradfri.TradfriClient(result.name);
 
     try {
-        const data = await client.authenticate(configuration.tradfri.securityCode);
-        response.end(JSON.stringify(data));
+        const data = await c.authenticate(securityCode);
+        response.end(JSON.stringify({result: result, data: data}));
     } catch (e) {
         response.end(null);
     }
+
+    response.end(JSON.stringify(result));
 };
 
 let startTradfri = () => {
 
     let configuration = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
-    if (client === null) {
-        client = new tradfri.TradfriClient(configuration.tradfri.name);
-    }
-
     try {
+        if (client === null) {
+            client = new tradfri.TradfriClient(configuration.tradfri.name);
+        }
+
         client.connect(configuration.tradfri.identity, configuration.tradfri.psk).then(result => {
             if (result) {
                 initializeTradfri();
@@ -165,7 +164,7 @@ let initializeSpotify = token => {
         .then(data => {
             spotifyApi.setAccessToken(data.body['access_token']);
             initialized = true;
-        })
+        });
 };
 
 let save = json => {

@@ -10,9 +10,10 @@ class Home extends Component {
         if (props.location.search.includes("?code")) {
             let token = props.location.search.split("?code=")[1];
 
-            fetch("http://localhost:8080/access/" + token);
-
-            this.props.history.push('/playing');
+            fetch("http://localhost:8080/access/" + token)
+                .then(() => {
+                    setTimeout(() => this.props.history.push('/playing'), 500);
+                });
         }
     }
 

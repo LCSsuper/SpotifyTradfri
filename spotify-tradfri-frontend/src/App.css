@@ -10,3 +10,7 @@ body {
 
     background: linear-gradient(to bottom, #1db954, #1db954, #191414);
 }
+
+.float-left {
+    float: left;
+}
