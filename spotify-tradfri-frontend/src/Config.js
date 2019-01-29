@@ -118,15 +118,17 @@ class Config extends Component {
                     if (contentType && contentType.indexOf("application/json") !== -1) {
                         return response.json().then(data => {
 
-                            let tradfri = this.state.tradfri;
-                            tradfri.name = data.result.name;
-                            tradfri.host = data.result.host;
-                            tradfri.version = data.result.version;
-                            tradfri.addresses[0] = data.result.addresses[0];
-                            tradfri.addresses[1] = data.result.addresses[1];
-                            tradfri.identity = data.data.identity;
-                            tradfri.psk = data.data.psk;
-                            this.setState({tradfri: tradfri});
+                            if (data.data !== null) {
+                                let tradfri = this.state.tradfri;
+                                tradfri.name = data.result.name;
+                                tradfri.host = data.result.host;
+                                tradfri.version = data.result.version;
+                                tradfri.addresses[0] = data.result.addresses[0];
+                                tradfri.addresses[1] = data.result.addresses[1];
+                                tradfri.identity = data.data.identity;
+                                tradfri.psk = data.data.psk;
+                                this.setState({tradfri: tradfri});
+                            }
                         });
                     }
                 })

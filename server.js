@@ -152,16 +152,19 @@ let generateTradfriData = async (response, securityCode) => {
     response.writeHeader(200, {"Content-Type": "application/json"});
 
     const result = await tradfri.discoverGateway();
+
+    if (result === null) {
+        response.end({data: null});
+    }
+
     let c = new tradfri.TradfriClient(result.name);
 
     try {
         const data = await c.authenticate(securityCode);
         response.end(JSON.stringify({result: result, data: data}));
     } catch (e) {
-        response.end(null);
+        response.end({data: null});
     }
-
-    response.end(JSON.stringify(result));
 };
 
 /**
