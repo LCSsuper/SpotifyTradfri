@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom';
 
 class Home extends Component {
 
+    /**
+     * Checks if the URI contains the query parameter 'code'
+     * which indicates that the Spotify login has taken place
+     * after which the playing page can be shown
+     * @param props
+     */
     constructor(props) {
         super(props);
 
@@ -17,6 +23,10 @@ class Home extends Component {
         }
     }
 
+    /**
+     * Renders the HTML
+     * @returns {XML}
+     */
     render() {
         return (
             <div className="container">
@@ -38,6 +48,9 @@ class Home extends Component {
         );
     }
 
+    /**
+     * Gets the authentication link from the back-end and sends the user there
+     */
     connect() {
         fetch("http://localhost:8080/authorize")
             .then(response => {

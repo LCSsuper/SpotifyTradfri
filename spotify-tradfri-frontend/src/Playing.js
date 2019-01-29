@@ -4,6 +4,10 @@ import ColorThief from 'color-thief';
 import hexSorter from 'hexsorter';
 class Playing extends Component {
 
+    /**
+     * Initiates the state and starts running getCurrentlyPlaying periodically
+     * @param props
+     */
     constructor(props) {
         super(props);
 
@@ -22,6 +26,10 @@ class Playing extends Component {
         }, 1000);
     }
 
+    /**
+     * Renders the HTML
+     * @returns {XML}
+     */
     render() {
         return (
             <div id="container">
@@ -37,6 +45,10 @@ class Playing extends Component {
         );
     }
 
+    /**
+     * Grabs the most saturated color from the album cover
+     * and asks the back-end what's currently playing
+     */
     getCurrentlyPlaying() {
         let self = this,
             colorThief = new ColorThief(),
@@ -66,6 +78,11 @@ class Playing extends Component {
             })
     }
 
+    /**
+     * Sets the background to the given hex value
+     * and sends that same value to the back-end
+     * @param hex
+     */
     setAndSendColor(hex) {
         let body = document.getElementsByTagName('body')[0];
 
@@ -80,11 +97,27 @@ class Playing extends Component {
         }
     }
 
+    /****************************************************************************************
+     *** Helper functions *******************************************************************
+     ***************************************************************************************/
+
+    /**
+     * Receives a decimal value and converts it to a hex value
+     * @param decimal
+     * @returns {string}
+     */
     decToHex(decimal) {
         let hex = decimal.toString('16');
         return hex.length === 1 ? '0' + hex : hex;
     }
 
+    /**
+     * Receives an RGB value and converts it to a hex color value
+     * @param r
+     * @param g
+     * @param b
+     * @returns {string}
+     */
     rgbToHex(r, g, b) {
         return this.decToHex(r) + this.decToHex(g) + this.decToHex(b);
     }

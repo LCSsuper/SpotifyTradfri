@@ -5,6 +5,9 @@ import Home from './Home.js';
 import Config from './Config.js';
 import Playing from './Playing.js';
 
+/**
+ * The React Router with the three pages
+ */
 class App extends Component {
   render() {
     return (

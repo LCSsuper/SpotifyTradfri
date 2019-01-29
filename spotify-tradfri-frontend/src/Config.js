@@ -2,8 +2,16 @@ import React, { Component } from 'react';
 import './Config.css';
 import { Link } from 'react-router-dom';
 
+/**
+ * The configuration page
+ */
 class Config extends Component {
 
+    /**
+     * Initiates the state with all the variables
+     * and binds all the functions that get called in the HTML
+     * @param props
+     */
     constructor(props) {
         super(props);
 
@@ -38,6 +46,10 @@ class Config extends Component {
         this.generateTradfriData = this.generateTradfriData.bind(this);
     }
 
+    /**
+     * Renders the HTML
+     * @returns {XML}
+     */
     render() {
         return (
             <div id="container">
@@ -75,16 +87,27 @@ class Config extends Component {
         );
     }
 
+    /**
+     * Calls getConfig when the page is loaded
+     */
     componentDidMount() {
         this.getConfig();
     }
 
+    /**
+     * Sends the configuration data to the back-end to get saved
+     */
     save() {
-        fetch("http://localhost:8080/save?json=" + JSON.stringify(this.state));
+        fetch("http://localhost:8080/save?json=" + JSON.stringify({tradfri: this.state.tradfri, spotify: this.state.spotify}));
 
         this.props.history.push('/');
     }
 
+    /**
+     * Sends the securitycode to the back-end,
+     * then waits for the generated data
+     * and fills the input fields when they are gotten
+     */
     generateTradfriData() {
         if (this.state.tradfri.securityCode !== '') {
             this.setState({loading: true});
@@ -113,6 +136,9 @@ class Config extends Component {
         }
     }
 
+    /**
+     * Gets the config.json data from the back-end and pre-fills the input fields
+     */
     getConfig() {
         let self = this;
 
@@ -143,24 +169,40 @@ class Config extends Component {
             });
     }
 
+    /**
+     * Saves the security code value to the state when it changes
+     * @param e
+     */
     handleSecurityCodeChange(e) {
         let tradfri = this.state.tradfri;
         tradfri.securityCode = e.target.value;
         this.setState({tradfri: tradfri});
     }
 
+    /**
+     * Saves the client ID value to the state when it changes
+     * @param e
+     */
     handleClientIDChange(e) {
         let spotify = this.state.spotify;
         spotify.clientId = e.target.value;
         this.setState({spotify: spotify});
     }
 
+    /**
+     * Saves the client secret value to the state when it changes
+     * @param e
+     */
     handleClientSecretChange(e) {
         let spotify = this.state.spotify;
         spotify.clientSecret = e.target.value;
         this.setState({spotify: spotify});
     }
 
+    /**
+     * Saves the redirect URI value to the state when it changes
+     * @param e
+     */
     handleRedirectURIChange(e) {
         let spotify = this.state.spotify;
         spotify.redirectUri = e.target.value;
