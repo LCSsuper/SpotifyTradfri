@@ -42,7 +42,7 @@ After filling in all configuration data you can connect with Spotify. The playin
 
 Yeah I'm lazy and didn't feel like cleaning it up. You should've seen version one lol.
 
-#####The UI is very ugly man, how come?
+##### The UI is very ugly man, how come?
 
 I'm not a designer, I'm a developer.
 
