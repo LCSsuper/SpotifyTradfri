@@ -1,13 +1,15 @@
 .container {
     box-sizing: border-box;
     background-color: rgba(50, 50, 50, 0.3);
-    border-radius: 20px;
+    border-radius: 10px;
 
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
     width: 300px;
     height: 500px;
@@ -16,7 +18,7 @@
 }
 
 .container p {
-    margin: 30px 30px 0 30px;
+    margin: 25px 30px 0 30px;
     text-align: left;
     line-height: 1.2;
 }
@@ -24,10 +26,13 @@
 .container .button {
     box-sizing: border-box;
     width: 80%;
-    border-radius: 20px;
+    height: 44px;
+    border-radius: 10px;
     padding: 10px 0 10px 0;
     transition: transform .2s;
     cursor: pointer;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .container .button:hover {
@@ -39,13 +44,12 @@
     left: 10%;
     bottom: 20px;
     background-color: #1db954;
-    box-shadow: #246538 1px 1px 10px;
 }
 
 .container #configure {
     margin: 10px 0 0 10%;
+    padding-top: 13px;
     background-color: #535052;
-    box-shadow: #484445 1px 1px 10px;
 }
 
 .container .button img {

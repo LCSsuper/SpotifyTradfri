@@ -13,7 +13,7 @@ input {
     opacity: 0.9;
     background: #727272;
     border: none;
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 10px;
     margin-top: 10px;
     color: white;
@@ -39,21 +39,20 @@ button, #cancel {
     margin-top: 10px;
     padding: 10px;
     color: white;
-    border-radius: 20px;
+    border-radius: 10px;
     border: 0;
     width: 150px;
     height: 33px;
     font: 400 11px system-ui;
     overflow: hidden;
     background-color: #1db954;
-    box-shadow: #246538 1px 1px 10px;
     cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     transition: transform .2s;
 }
 
 #cancel, button#generate {
     background-color: #818181;
-    box-shadow: #484445 1px 1px 10px;
 }
 
 #cancel {

@@ -1,3 +1,10 @@
+/**
+ * This file contains the server for the Spotify - Trådfri app, created by Lucas Bos
+ */
+
+/**
+ * Requires all dependencies
+ */
 let http = require('http'),
     fs = require('fs'),
     SpotifyWebApi = require('spotify-web-api-node'),
@@ -5,23 +12,34 @@ let http = require('http'),
     request = require('request'),
     path = require('path');
 
+/**
+ * Declares global variables
+ */
 let client = null,
     spotifyApi = null,
-    initialized = false;
+    initialized = false,
+    lightbulbs = [];
 
-let lightbulbs = [];
-
+/**
+ * Creates a simple HTTP server and start listening on port 8080
+ */
 http.createServer((request, response) => {
 
+    /**
+     * Makes sure the front-end is allowed access to the server
+     */
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Request-Method', '*');
     response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
     response.setHeader('Access-Control-Allow-Headers', '*');
 
     let url = request.url;
-
     console.log(url);
 
+    /**
+     * Endpoint: /color/{color}
+     * Receives the hex color and sets the lightbulbs to that color
+     */
     if (url.startsWith('/color/')) {
         let color = url.replace('/color/', '');
         setColor(color);

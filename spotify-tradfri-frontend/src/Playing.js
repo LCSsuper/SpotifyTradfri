@@ -38,12 +38,24 @@ class Playing extends Component {
     }
 
     getCurrentlyPlaying() {
-        let self = this;
+        let self = this,
+            colorThief = new ColorThief(),
+            imageEl = document.getElementById('album-cover');
+
+        try {
+            let colors = colorThief.getPalette(imageEl, 8);
+
+            for (let i = 0; i < colors.length; i++) {
+                colors[i] = '#' + this.rgbToHex(colors[i][0], colors[i][1], colors[i][2]);
+            }
+
+            let color = hexSorter.mostSaturatedColor(colors);
+
+            this.setAndSendColor(color);
+        } catch (e) {}
 
         fetch("http://localhost:8080/getCurrentlyPlaying")
-            .then(response => {
-                return response.json();
-            })
+            .then(response => response.json())
             .then(json => {
                 self.setState({
                     title: json.title,
@@ -51,21 +63,6 @@ class Playing extends Component {
                     album: json.album,
                     albumCover: "data:image/jpeg;base64, " + json.albumCover
                 });
-
-                let colorThief = new ColorThief();
-                let imageEl = document.getElementById('album-cover');
-                try {
-                    let colors = colorThief.getPalette(imageEl, 8);
-
-                    for (let i = 0; i < colors.length; i++) {
-                        colors[i] = '#' + self.rgbToHex(colors[i][0], colors[i][1], colors[i][2]);
-                    }
-
-                    let color = hexSorter.mostSaturatedColor(colors);
-
-                    self.setAndSendColor(color);
-
-                } catch (e) {}
             })
     }
 
