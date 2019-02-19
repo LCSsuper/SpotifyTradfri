@@ -8,7 +8,7 @@ html, body {
 body {
     height: 100vh;
 
-    background: linear-gradient(to bottom, #1db954, #1db954, #191414);
+    background: #2f2f2f;
 }
 
 .float-left {

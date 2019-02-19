@@ -38,8 +38,7 @@ class Playing extends Component {
                 </div>
                 <div id="details-container">
                     <h1 id="title">{this.state.title ? this.state.title : "Nothing currently playing"}</h1>
-                    <p id="artist">{this.state.artist}</p>
-                    <p id="album">{this.state.album}</p>
+                    <p id="artist">{this.state.artist} - {this.state.album}</p>
                 </div>
             </div>
         );
@@ -84,12 +83,13 @@ class Playing extends Component {
      * @param hex
      */
     setAndSendColor(hex) {
-        let body = document.getElementsByTagName('body')[0];
+        let cover = document.getElementById('album-cover');
 
         if (this.state.hex !== hex) {
             fetch('http://localhost:8080/color/' + hex.split("#")[1]);
 
-            body.style.background = "linear-gradient(to bottom, " + hex + ", " + hex + ", #191414)";
+            cover.style.boxShadow = "1px 1px 150px " + hex;
+            // body.style.background = "linear-gradient(to bottom, " + hex + ", " + hex + ", #191414)";
 
             this.setState({
                 hex: hex
