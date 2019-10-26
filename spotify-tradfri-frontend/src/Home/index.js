@@ -41,7 +41,7 @@ class Home extends Component {
                 </Link>
                 <p>When all the data is configured you can connect with your Spotify account:</p>
                 <div className="button" id="spotify" onClick={this.connect}>
-                    <img src="spotify-white.png"/>
+                    <img alt="" src="spotify-white.png"/>
                     Connect with Spotify
                 </div>
             </div>
@@ -52,7 +52,7 @@ class Home extends Component {
      * Gets the authentication link from the back-end and sends the user there
      */
     connect() {
-        fetch("http://localhost:8080/authorize")
+        fetch("http://localhost:8080/spotify/authorize")
             .then(response => {
                 return response.text();
             })

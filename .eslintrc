@@ -1,0 +1,49 @@
+{
+    "extends": ["airbnb"],
+    // "parser": "babel-eslint",
+    "env": {
+      "browser": false,
+      "commonjs": true,
+      "es6": true,
+      "node": true,
+      "jest": true
+    },
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "sourceType": "module"
+    },
+    "globals": {
+      "application": true,
+      "scopes": true,
+      "plugins": true,
+      "databaseManager": true,
+      "utils": true,
+      "LOGGINGLEVEL": true,
+      "forms": true,
+      "window": true,
+      "fetch": true,
+      "localStorage": true,
+    },
+    "rules": {
+      "import/prefer-default-export": 0,
+        "strict": 0,
+      "no-restricted-syntax": 0,
+      "react/jsx-indent": ["error", 4],
+      "react/jsx-indent-props": ["error", 4],
+      "func-names": "warn",
+      "max-len": 0,
+      "no-console": 0,
+      "no-continue": 0,
+      "no-await-in-loop": 0,
+      "import/extensions": 0,
+      "react/require-default-props": 0,
+      "camelcase": 0,
+      "comma-dangle": "off",
+      "eqeqeq": "error",
+      "curly": "error",
+      "no-param-reassign": ["error", { "props": false }],
+      "indent": "off"
+    }
+  }

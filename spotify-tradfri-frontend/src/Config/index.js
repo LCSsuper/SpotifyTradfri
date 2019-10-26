@@ -98,7 +98,7 @@ class Config extends Component {
      * Sends the configuration data to the back-end to get saved
      */
     save() {
-        fetch("http://localhost:8080/save?json=" + JSON.stringify({tradfri: this.state.tradfri, spotify: this.state.spotify}));
+        fetch("http://localhost:8080/config/save?json=" + JSON.stringify({tradfri: this.state.tradfri, spotify: this.state.spotify}));
 
         this.props.history.push('/');
     }
@@ -112,7 +112,7 @@ class Config extends Component {
         if (this.state.tradfri.securityCode !== '') {
             this.setState({loading: true});
 
-            fetch('http://localhost:8080/generateTradfriData/' + this.state.tradfri.securityCode)
+            fetch('http://localhost:8080/tradfri/generate/' + this.state.tradfri.securityCode)
                 .then(response => {
                     const contentType = response.headers.get("content-type");
                     if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -144,7 +144,7 @@ class Config extends Component {
     getConfig() {
         let self = this;
 
-        fetch("http://localhost:8080/getConfig")
+        fetch("http://localhost:8080/config")
             .then(function(response) {
                 return response.json();
             })

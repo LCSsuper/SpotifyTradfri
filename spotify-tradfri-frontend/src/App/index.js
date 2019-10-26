@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
-import Home from './Home.js';
-import Config from './Config.js';
-import Playing from './Playing.js';
+import Home from '../Home';
+import Config from '../Config';
+import Playing from '../Playing';
 
 /**
  * The React Router with the three pages
