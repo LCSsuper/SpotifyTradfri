@@ -13,7 +13,7 @@ class Spotify {
   }
 
   async initialize(token) {
-    const configuration = JSON.parse(await get());
+    const configuration = await get();
 
     this.api = new SpotifyWebApi({
       clientId: configuration.spotify.clientId,

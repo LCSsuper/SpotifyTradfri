@@ -9,7 +9,6 @@ class Tradfri {
   }
 
   async generate(security_code) {
-    console.log(this.client);
     const result = await tradfri.discoverGateway();
 
     if (!result) return { data: null };
@@ -27,7 +26,7 @@ class Tradfri {
   }
 
   async start() {
-    const configuration = JSON.parse(await get());
+    const configuration = await get();
 
     try {
       if (!this.client) {
@@ -73,7 +72,7 @@ class Tradfri {
     for (const {
       lightList: [light]
     } in this.lightbulbs) {
-      light.setColor(color);
+      light.setColor(color.replace('#', ''));
     }
   }
 }

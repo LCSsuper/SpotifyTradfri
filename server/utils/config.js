@@ -8,7 +8,7 @@ const get = (example = false) => new Promise((resolve, reject) => {
             if (err) {
                 reject(err);
             } else {
-                fs.readFile('./config.json', 'utf8', (_, data) => { resolve(data); });
+                fs.readFile('./config.json', 'utf8', (_, data) => { resolve(JSON.parse(data)); });
             }
         });
     }

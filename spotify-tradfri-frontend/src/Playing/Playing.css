@@ -17,6 +17,8 @@
     margin: 5% 20% 0 20%;
 
     border-radius: 20px;
+
+    transition: box-shadow .5s;
 }
 
 #details-container {

@@ -26,7 +26,7 @@ app.get('/tradfri/generate/:security_code', async ({ params }, res) => {
 
 app.get('/spotify/authorize', async (req, res) => {
     const scopes = 'user-read-private user-read-email user-read-playback-state';
-    const configuration = JSON.parse(await get());
+    const configuration = await get();
 
     res.send(
         `https://accounts.spotify.com/authorize?response_type=code&client_id=${
@@ -63,10 +63,9 @@ app.get('/config', async (req, res) => {
 });
 
 app.get('/spotify/playing', async (req, res) => {
-    const data = await spotify.playing();
-    res.send(JSON.stringify(data));
+    res.send(await spotify.playing());
 });
 
-app.listen(port, () =>
+app.listen(port, () => {
     console.log(`Spotify Tradfri backend listening on ${port}!`);
-);
+});
