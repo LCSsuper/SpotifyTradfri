@@ -8,6 +8,6 @@ config.backup.json
 
 .DS_Store
 
-album/*
+server/album/*
 
 workspace.xml
