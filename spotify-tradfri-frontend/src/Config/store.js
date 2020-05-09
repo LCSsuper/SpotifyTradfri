@@ -54,24 +54,23 @@ class ConfigStore {
         if (!this.tradfri.securityCode) return;
 
         try {
-            const { data } = await request
+            const { data, result } = await request
                 .get(
                     `http://localhost:8080/tradfri/generate/${this.tradfri.securityCode}`
                 )
                 .then(res => res.body);
 
-            // TODO: finish this at home
-            // if (data.data !== null) {
-            //     let tradfri = this.state.tradfri;
-            //     tradfri.name = data.result.name;
-            //     tradfri.host = data.result.host;
-            //     tradfri.version = data.result.version;
-            //     tradfri.addresses[0] = data.result.addresses[0];
-            //     tradfri.addresses[1] = data.result.addresses[1];
-            //     tradfri.identity = data.data.identity;
-            //     tradfri.psk = data.data.psk;
-            //     this.setState({tradfri: tradfri});
-            // }
+            if (!data || !result) return;
+
+            this.tradfri = {
+                ...this.tradfri,
+                name: result.name,
+                host: result.host,
+                version: result.version,
+                addresses: result.addresses,
+                identity: data.identity,
+                psk: data.psk
+            };
         } catch (e) {
             console.error(e);
             this.error = true;
@@ -105,7 +104,7 @@ decorate(ConfigStore, {
     setSecurityCode: action,
     setClientId: action,
     setClientSecret: action,
-    setRedirectUri: action,
+    setRedirectUri: action
 });
 
 export default new ConfigStore();

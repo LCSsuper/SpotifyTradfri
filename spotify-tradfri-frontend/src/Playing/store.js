@@ -17,6 +17,8 @@ class PlayingStore {
         this.album = "";
         this.cover = "";
         this.hex = "";
+        this.colors = [];
+        this.is_playing = false;
         this.intervalId = null;
     }
 
@@ -36,7 +38,7 @@ class PlayingStore {
     };
 
     playing = async () => {
-        const { title, artist, album, cover } = await request
+        const { title, artist, album, cover, is_playing } = await request
             .get("http://localhost:8080/spotify/playing")
             .then(res => res.body);
 
@@ -44,6 +46,7 @@ class PlayingStore {
         this.artist = artist;
         this.album = album;
         this.cover = `data:image/jpeg;base64, ${cover}`;
+        this.is_playing = is_playing;
     };
 
     getColor = () => {
@@ -53,6 +56,7 @@ class PlayingStore {
             try {
                 let colors = colorThief.getPalette(imageEl, 8);
                 colors = colors.map(e => `#${rgbToHex(e)}`);
+                this.colors = colors;
                 this.hex = hexSorter.mostSaturatedColor(colors);
             } catch (e) {
                 console.error(e);
@@ -60,10 +64,15 @@ class PlayingStore {
         };
     };
 
-    setColor = () => {
+    setColor = async () => {
         const cover = document.getElementById("album-cover");
-        request.get(`http://localhost:8080/tradfri/color/${this.hex}`);
-        cover.style.boxShadow = `1px 1px 150px ${this.hex}`;
+        await request
+            .post(`http://localhost:8080/tradfri/colors`)
+            .send({ colors: this.colors });
+
+        cover.style.boxShadow = this.is_playing
+            ? `1px 1px 100px ${this.hex}`
+            : "";
     };
 }
 
@@ -73,6 +82,8 @@ decorate(PlayingStore, {
     album: observable,
     cover: observable,
     hex: observable,
+    colors: observable,
+    is_playing: observable,
     initialize: action,
     playing: action
 });

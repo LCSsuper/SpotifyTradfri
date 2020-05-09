@@ -1,28 +1,34 @@
-#container {
-    width: 60%;
-    height: 100%;
-    margin: 0 20% 0 20%;
-
-    box-sizing: border-box;
-    border: 1px solid transparent;
+#playing-container {
+    all: unset;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: center; /* TODO: remove this if ever I can implement a queue */
 }
 
-#album-cover-container {
-    height: 80%;
+#playing {
+    max-width: 50%;
+    flex: 0 0 50%;
+    box-sizing: border-box;
+    padding: 4rem;
+}
+
+#album {
     width: 100%;
 }
 
 #album-cover {
-    width: 60%;
-    margin: 5% 20% 0 20%;
-
-    border-radius: 20px;
-
-    transition: box-shadow .5s;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 1rem;
+    transition: box-shadow 0.5s, transform 0.5s;
 }
 
-#details-container {
-    height: 20%;
-    width: 100%;
-    text-align: center;
+#title {
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

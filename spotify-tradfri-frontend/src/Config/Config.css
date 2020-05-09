@@ -1,8 +1,8 @@
-#container {
+#config-container {
     width: 40%;
     height: 100%;
     margin: 0 30% 0 30%;
-    padding-top: 1%;
+    padding: 1rem;
 
     box-sizing: border-box;
 }
@@ -27,12 +27,14 @@ input {
     color: #c9c9c9;
 }
 
-h3, h5 {
+h3,
+h5 {
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
-button, #cancel {
+button,
+#cancel {
     box-sizing: border-box;
     text-align: center;
 
@@ -49,10 +51,11 @@ button, #cancel {
     background-color: #1db954;
     cursor: pointer;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    transition: transform .2s;
+    transition: transform 0.2s;
 }
 
-#cancel, button#generate {
+#cancel,
+button#generate {
     background-color: #818181;
 }
 
@@ -60,7 +63,8 @@ button, #cancel {
     margin: 10px 10px 10px 0;
 }
 
-button:hover, #cancel:hover {
+button:hover,
+#cancel:hover {
     transform: scale(1.05);
 }
 
@@ -73,35 +77,95 @@ p {
 **************************************/
 
 @keyframes anima1 {
-    0%   { top: 0;                 left: 0;                 }
-    25%  { top: 0;                 left: calc(100% - 20px); }
-    50%  { top: calc(100% - 20px); left: calc(100% - 20px); }
-    75%  { top: calc(100% - 20px); left: 0;                 }
-    100% { top: 0;                 left: 0;                 }
+    0% {
+        top: 0;
+        left: 0;
+    }
+    25% {
+        top: 0;
+        left: calc(100% - 20px);
+    }
+    50% {
+        top: calc(100% - 20px);
+        left: calc(100% - 20px);
+    }
+    75% {
+        top: calc(100% - 20px);
+        left: 0;
+    }
+    100% {
+        top: 0;
+        left: 0;
+    }
 }
 
 @keyframes anima2 {
-    0%   { top: 0;                 left: calc(100% - 20px); }
-    25%  { top: calc(100% - 20px); left: calc(100% - 20px); }
-    50%  { top: calc(100% - 20px); left: 0;                 }
-    75%  { top: 0;                 left: 0;                 }
-    100% { top: 0;                 left: calc(100% - 20px); }
+    0% {
+        top: 0;
+        left: calc(100% - 20px);
+    }
+    25% {
+        top: calc(100% - 20px);
+        left: calc(100% - 20px);
+    }
+    50% {
+        top: calc(100% - 20px);
+        left: 0;
+    }
+    75% {
+        top: 0;
+        left: 0;
+    }
+    100% {
+        top: 0;
+        left: calc(100% - 20px);
+    }
 }
 
 @keyframes anima3 {
-    0%   { top: calc(100% - 20px); left: calc(100% - 20px); }
-    25%  { top: calc(100% - 20px); left: 0;                 }
-    50%  { top: 0;                 left: 0;                 }
-    75%  { top: 0;                 left: calc(100% - 20px); }
-    100% { top: calc(100% - 20px); left: calc(100% - 20px); }
+    0% {
+        top: calc(100% - 20px);
+        left: calc(100% - 20px);
+    }
+    25% {
+        top: calc(100% - 20px);
+        left: 0;
+    }
+    50% {
+        top: 0;
+        left: 0;
+    }
+    75% {
+        top: 0;
+        left: calc(100% - 20px);
+    }
+    100% {
+        top: calc(100% - 20px);
+        left: calc(100% - 20px);
+    }
 }
 
 @keyframes anima4 {
-    0%   { top: calc(100% - 20px); left: 0;                 }
-    25%  { top: 0;                 left: 0;                 }
-    50%  { top: 0;                 left: calc(100% - 20px); }
-    75%  { top: calc(100% - 20px); left: calc(100% - 20px); }
-    100% { top: calc(100% - 20px); left: 0;                 }
+    0% {
+        top: calc(100% - 20px);
+        left: 0;
+    }
+    25% {
+        top: 0;
+        left: 0;
+    }
+    50% {
+        top: 0;
+        left: calc(100% - 20px);
+    }
+    75% {
+        top: calc(100% - 20px);
+        left: calc(100% - 20px);
+    }
+    100% {
+        top: calc(100% - 20px);
+        left: 0;
+    }
 }
 
 body {

@@ -6,26 +6,43 @@ import "./Playing.css";
 
 const Playing = observer(() => {
     const {
-        playingStore: { title, artist, album, cover, initialize, cleanup }
+        playingStore: {
+            title,
+            artist,
+            album,
+            cover,
+            is_playing,
+            initialize,
+            cleanup
+        }
     } = useContext(context);
 
     useEffect(() => {
         initialize();
-
-        return () => {
-            cleanup();
-        };
+        return cleanup;
     }, []);
 
     return (
-        <div id="container">
-            <div id="album-cover-container">
-                <img id="album-cover" src={cover} alt="" />
-            </div>
-            <div id="details-container">
+        <div id="playing-container">
+            <div id="playing">
+                <div id="album">
+                    <img
+                        id="album-cover"
+                        src={cover}
+                        alt=""
+                        style={
+                            !is_playing
+                                ? {
+                                      transform: "scale(.9)",
+                                      filter: "grayscale(100%)"
+                                  }
+                                : {}
+                        }
+                    />
+                </div>
                 <h1 id="title">{title || "Nothing currently playing"}</h1>
                 <p id="artist">
-                    {artist} - {album}
+                    {artist} {artist && "-"} {album}
                 </p>
             </div>
         </div>

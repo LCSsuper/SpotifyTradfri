@@ -12,6 +12,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "faker": "^4.1.0",
     "node-tradfri-client": "^1.4.3",
     "request": "^2.88.0",
     "spotify-web-api-node": "^4.0.0",

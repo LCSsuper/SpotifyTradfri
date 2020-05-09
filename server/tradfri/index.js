@@ -1,80 +1,113 @@
-const tradfri = require('node-tradfri-client');
+const {
+    discoverGateway,
+    TradfriClient,
+    AccessoryTypes
+} = require("node-tradfri-client");
+const faker = require("faker");
 
-const { get } = require('../utils/config');
+const { get } = require("../utils/config");
 
 class Tradfri {
-  constructor() {
-    this.client = null;
-    this.lightbulbs = [];
-  }
-
-  async generate(security_code) {
-    const result = await tradfri.discoverGateway();
-
-    if (!result) return { data: null };
-
-    const { name } = result;
-
-    const c = new tradfri.TradfriClient(name);
-
-    try {
-      const data = await c.authenticate(security_code);
-      return { result, data };
-    } catch (e) {
-      return { data: null };
+    constructor() {
+        this.client = null;
+        this.lightbulbs = [];
     }
-  }
 
-  async start() {
-    const configuration = await get();
+    async generate(security_code) {
+        const result = await discoverGateway();
 
-    try {
-      if (!this.client) {
-        this.client = new tradfri.TradfriClient(configuration.tradfri.name);
-      }
+        if (!result) {
+            console.error("Tradfri: Failed to discover gateway!");
+            return { data: null };
+        }
 
-      if (
-        await this.client.connect(
-          configuration.tradfri.identity,
-          configuration.tradfri.psk
-        )
-      ) {
-        this.initialize();
-      }
+        const {
+            addresses: [address]
+        } = result;
 
-      return true;
-    } catch (e) {
-      return false;
+        const c = new TradfriClient(address);
+
+        try {
+            const data = await c.authenticate(security_code);
+            return { result, data };
+        } catch (e) {
+            console.error("Tradfri: Failed to authenticate with address");
+            console.error(e.message);
+            return { data: null };
+        }
     }
-  }
 
-  initialize() {
-    this.client
-      .on("device updated", this.updated)
-      .on("device removed", this.removed)
-      .observeDevices();
-  }
+    async start() {
+        const configuration = await get();
 
-  updated(device) {
-    if (
-      device.type === tradfri.AccessoryTypes.lightbulb &&
-      device.lightList[0].spectrum === "rgb"
-    ) {
-      this.lightbulbs[device.instanceId] = device;
+        try {
+            if (!this.client) {
+                this.client = new TradfriClient(
+                    configuration.tradfri.addresses[0]
+                );
+            }
+
+            if (
+                await this.client.connect(
+                    configuration.tradfri.identity,
+                    configuration.tradfri.psk
+                )
+            ) {
+                this.initialize();
+            }
+
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
-  }
 
-  removed(instanceId) {
-    delete this.lightbulbs[instanceId];
-  }
-
-  set_color(color) {
-    for (const {
-      lightList: [light]
-    } in this.lightbulbs) {
-      light.setColor(color.replace('#', ''));
+    initialize() {
+        this.client
+            .on("device updated", device => {
+                this.updated(device, this.lightbulbs);
+            })
+            .on("device removed", device => {
+                this.removed(device, this.lightbulbs);
+            })
+            .observeDevices();
     }
-  }
+
+    updated(device, lightbulbs) {
+        if (
+            device.type === AccessoryTypes.lightbulb &&
+            device.lightList[0].spectrum === "rgb"
+        ) {
+            if (lightbulbs.find(e => e.id === device.instanceId)) return;
+            lightbulbs.push({
+                id: device.instanceId,
+                light: device.lightList[0]
+            });
+        }
+    }
+
+    removed(instanceId, lightbulbs) {
+        lightbulbs = lightbulbs.filter(e => e.id !== instanceId);
+    }
+
+    rotate_colors(colors) {
+        if (!colors.length) return;
+        for (const { light } of this.lightbulbs) {
+            const index = faker.random.number({
+                min: 0,
+                max: colors.length - 1
+            });
+            light.setColor(colors[index], 0.2);
+        }
+    }
+
+    set_colors(colors) {
+        if (!colors) return;
+        clearInterval(this.intervalId);
+        this.intervalId = setInterval(() => {
+            this.rotate_colors(colors.map(e => e.replace("#", "")));
+        }, 500);
+    }
 }
 
 module.exports = Tradfri;
